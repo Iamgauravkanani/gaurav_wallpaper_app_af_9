@@ -1,4 +1,4 @@
-package com.example.wallpaper_app_af_9
+package cunwind.wallpaper.app
 
 import io.flutter.embedding.android.FlutterActivity
 

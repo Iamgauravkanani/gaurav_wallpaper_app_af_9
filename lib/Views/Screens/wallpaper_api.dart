@@ -23,11 +23,12 @@ class _Wallpaper_ScreenState extends State<Wallpaper_Screen> {
         title: AnimatedTextKit(
           repeatForever: true,
           animatedTexts: [
-            TyperAnimatedText("PixaBay App"),
+            TyperAnimatedText("Unwind Wallpaper"),
           ],
         ),
       ),
       body: FutureBuilder(
+
         future: Api_Helper.api_helper.getWallPaper(search_data: searchString),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
@@ -36,55 +37,58 @@ class _Wallpaper_ScreenState extends State<Wallpaper_Screen> {
             );
           } else if (snapshot.hasData) {
             List<WallPaper>? wallpaper = snapshot.data;
-            return Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: 45,
-                  child: SearchBarAnimation(
-                    buttonWidget: Icon(CupertinoIcons.search),
-                    secondaryButtonWidget: Icon(Icons.search),
-                    textEditingController: search_controller,
-                    isOriginalAnimation: true,
-                    buttonBorderColour: Colors.black45,
-                    trailingWidget: Icon(Icons.search),
-                    onFieldSubmitted: (String value) {
-                      setState(() {
-                        searchString = value;
-                      });
-                      search_controller.clear();
-                    },
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    height: 45,
+                    child: SearchBarAnimation(
+                      buttonWidget: Icon(CupertinoIcons.search),
+                      secondaryButtonWidget: Icon(Icons.search),
+                      textEditingController: search_controller,
+                      isOriginalAnimation: true,
+                      buttonBorderColour: Colors.black45,
+                      trailingWidget: Icon(Icons.search),
+                      onFieldSubmitted: (String value) {
+                        setState(() {
+                          searchString = value;
+                        });
+                        search_controller.clear();
+                      },
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 350,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      itemCount: wallpaper!.length,
-                      itemBuilder: (context, i) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, "detail",
-                                arguments: wallpaper[i]);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              image: DecorationImage(
-                                image: NetworkImage(wallpaper[i].largeImageURL),
-                                fit: BoxFit.cover,
+                  Expanded(
+                    child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisExtent: 350,
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: wallpaper!.length,
+                        itemBuilder: (context, i) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, "detail",
+                                  arguments: wallpaper[i]);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                image: DecorationImage(
+                                  image: NetworkImage(wallpaper[i].largeImageURL),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
-                ),
-              ],
+                          );
+                        }),
+                  ),
+                ],
+              ),
             );
           }
           return Center(
